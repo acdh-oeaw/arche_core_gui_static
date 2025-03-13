@@ -1,0 +1,12 @@
+basic:  
+    version: 1.0
+    header: true
+    js:
+        js/arche_core_gui_static_base.js: {}
+    dependencies:
+        - core/drupal
+        - core/drupal.form
+        - core/drupalSettings
+        
+        
+        

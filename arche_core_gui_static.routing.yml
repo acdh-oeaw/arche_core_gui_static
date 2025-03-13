@@ -1,0 +1,8 @@
+arche_static_update_nodes:
+  path: '/api/update-static-nodes'
+  defaults:
+    _controller: '\Drupal\arche_core_static\Controller\MainController::updateNodes'
+    _title: 'Update Static Nodes'
+  requirements:
+    _permission: 'access content'
+    _access: 'TRUE'

@@ -1,0 +1,28 @@
+{
+    "name": "acdh-oeaw/arche_core_gui_static",
+    "description": "Drupal Static pages module to ACDHCH ARCHE repository",
+    "type": "drupal-module",
+    "homepage": "https://github.com/acdh-oeaw/arche_core_gui_static",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Norbert Czirjak",
+            "email": "norbert.czirjak@oeaw.ac.at"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\arche_core_gui_static\\": "src/",
+            "Drupal\\arche_core_gui_static\\Controller\\": "src/Controller"
+        }
+    },
+     "extra": {
+    },
+    "config": {
+        "allow-plugins": true
+    }
+}
