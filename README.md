@@ -1,0 +1,1 @@
+Arche static pages plugin
