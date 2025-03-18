@@ -55,14 +55,15 @@ class MainController extends ControllerBase {
             foreach ($values as $pathAlias) {
                 // Convert alias to system path
                 $path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . $pathAlias);
-
+                echo $pathAlias;
+                echo "<br>";
                 // Check if it's a node path
                 if (preg_match('/^\/node\/(\d+)$/', $path, $matches)) {
                     $nid = $matches[1];
                     $node = Node::load($nid);
 
                     if ($node) {
-                        $nLang = $node->language()->getId();
+                        echo $nLang = $node->language()->getId();
                         if (isset($this->content[$nLang][$pathAlias])) {
                             $node->set('body', [
                                 'value' => $this->content[$nLang][$pathAlias],
@@ -82,16 +83,19 @@ class MainController extends ControllerBase {
     private function fetchGithubContent() {
         $httpClient = new \GuzzleHttp\Client();
         //https://github.com/acdh-oeaw/arche-static-text/blob/main/arche2/en/deposition-process_en.html
-        foreach ($this->config as $lang => $url) {
-            $htmlUrl = $this->githubUrl . $lang . '/' . $url[0] . '.html';
-            $jsonlUrl = $this->githubUrl . $lang . '/' . $url[0] . '.json';
-            $htmlContent = "";
-            $jsonContent = "";
-            $htmlContent = $this->fetchContent($htmlUrl);
-            $jsonContent = $this->fetchContent($jsonlUrl);
 
-            if (!empty($jsonContent) && !empty($htmlContent)) {
-                $this->content[$lang][$url[0]] = $this->generateHtmlContent($htmlContent, $jsonContent);
+        foreach ($this->config as $lang => $urls) {
+            foreach ($urls as $url) {
+                $htmlUrl = $this->githubUrl . $lang . '/' . $url . '.html';
+                $jsonlUrl = $this->githubUrl . $lang . '/' . $url . '.json';
+                $htmlContent = "";
+                $jsonContent = "";
+                $htmlContent = $this->fetchContent($htmlUrl);
+                $jsonContent = $this->fetchContent($jsonlUrl);
+
+                if (!empty($jsonContent) && !empty($htmlContent)) {
+                    $this->content[$lang][$url] = $this->generateHtmlContent($htmlContent, $jsonContent);
+                }
             }
         }
     }
