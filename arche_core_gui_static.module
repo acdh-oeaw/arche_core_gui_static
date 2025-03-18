@@ -1,11 +1,10 @@
 <?php
 
-/*
-function arche_core_gui_static_page_attachments(array &$page) {
-    
-}
 
-*/
+function arche_core_gui_static_page_attachments(array &$page) {
+    // This could in most cases be added in template as well with:
+    $page['#attached']['library'][] = 'arche_core_gui_static/arche_core_gui_static_basic_css_js';
+}
 
 
 
