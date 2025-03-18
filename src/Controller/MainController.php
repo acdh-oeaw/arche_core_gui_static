@@ -63,7 +63,7 @@ class MainController extends ControllerBase {
                     $node = Node::load($nid);
 
                     if ($node) {
-                        echo $nLang = $node->language()->getId();
+                        $nLang = $node->language()->getId();
                         if (isset($this->content[$nLang][$pathAlias])) {
                             $node->set('body', [
                                 'value' => $this->content[$nLang][$pathAlias],
