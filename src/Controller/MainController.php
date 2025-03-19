@@ -55,6 +55,7 @@ class MainController extends ControllerBase {
             foreach ($values as $pathAlias) {
                 // Convert alias to system path
                 $path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . $pathAlias);
+                echo "Process: <br>";
                 echo $pathAlias;
                 echo "<br>";
                 // Check if it's a node path
