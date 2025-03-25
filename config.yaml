@@ -2,7 +2,7 @@ en:
     - deposition-process
     - deposition-agreement
     - filenames-formats-metadata
-    #- faq
+    - faq
     #- further-guidance
     #- technical-setup
     #- api-access
