@@ -3,9 +3,9 @@ en:
     - deposition-agreement
     - filenames-formats-metadata
     - faq
-    #- further-guidance
-    #- technical-setup
-    #- api-access
+    - further-guidance
+    - technical-setup
+    - api-access
     #- collection-policy
     #- preservation-policy
     #- privacy-policy
