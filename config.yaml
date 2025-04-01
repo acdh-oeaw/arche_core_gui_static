@@ -11,8 +11,8 @@ en:
     - privacy-policy
     - terms-of-use
     - about-arche
-#de: 
-    #- de/einreichungsprozess 
+de: 
+    - de/einreichungsprozess 
     #- de/datenuebergabevertrag
     #- de/dateinamen-formate-metadaten
     #- de/faq-de
