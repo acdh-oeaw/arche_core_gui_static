@@ -6,11 +6,11 @@ en:
     - further-guidance
     - technical-setup
     - api-access
-    #- collection-policy
-    #- preservation-policy
-    #- privacy-policy
-    #- terms-of-use
-    #- about-arche
+    - collection-policy
+    - preservation-policy
+    - privacy-policy
+    - terms-of-use
+    - about-arche
 #de: 
     #- de/einreichungsprozess 
     #- de/datenuebergabevertrag
