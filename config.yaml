@@ -12,16 +12,16 @@ en:
     - terms-of-use
     - about-arche
 de: 
-    - de/einreichungsprozess 
-    #- de/datenuebergabevertrag
-    #- de/dateinamen-formate-metadaten
-    #- de/faq-de
-    #- de/weiterfuehrende-informationen
-    #- de/technischer-aufbau
-    #- de/api-zugriff
-    #- de/sammlungsstrategie
-    #- de/konservierungsrichtlinien
-    #- de/datenschutzbestimmungen
-    #- de/nutzungsbedingungen
-    #- de/ueber-arche
+    - einreichungsprozess 
+    - datenuebergabevertrag
+    - dateinamen-formate-metadaten
+    - faq-de
+    - weiterfuehrende-informationen
+    - technischer-aufbau
+    - api-zugriff
+    - sammlungsstrategie
+    - konservierungsrichtlinien
+    - datenschutzbestimmungen
+    - nutzungsbedingungen
+    - ueber-arche
     
