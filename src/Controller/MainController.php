@@ -50,29 +50,38 @@ class MainController extends ControllerBase {
 
     private function fetchNodes() {
 
+        foreach ($this->config as $langcode => $values) {
+            foreach ($values as $alias) {
+                $alias_manager = \Drupal::service('path_alias.manager');
+                // Step 1: Resolve alias to internal path
+                $system_path = $alias_manager->getPathByAlias('/'.$alias, $langcode);
 
-        foreach ($this->config as $lang => $values) {
-            foreach ($values as $pathAlias) {
-                // Convert alias to system path
-                $path = \Drupal::service('path_alias.manager')->getPathByAlias('/' . $pathAlias);
-                echo "Process: <br>";
-                echo $pathAlias;
-                echo "<br>";
-                // Check if it's a node path
-                if (preg_match('/^\/node\/(\d+)$/', $path, $matches)) {
+                // Step 2: Check if it's a node path like "/node/123"
+                if (preg_match('#^/node/(\d+)$#', $system_path, $matches)) {
                     $nid = $matches[1];
+
+                    // Step 3: Load the node
                     $node = Node::load($nid);
 
                     if ($node) {
+                        echo "🎉 Loaded node: " . $node->label() . " (ID: $nid)\n";
+                        echo "<br>";
                         $nLang = $node->language()->getId();
-                        if (isset($this->content[$nLang][$pathAlias])) {
-                            $node->set('body', [
-                                'value' => $this->content[$nLang][$pathAlias],
-                                'format' => 'full_html', // Ensure it's set to 'full_html' or another appropriate format
-                            ]);
-                            $node->save();
-                        }
-                    }
+                        if (isset($this->content[$langcode][$alias])) {
+                            
+                                $node->set('body', [
+                                    'value' => $this->content[$langcode][$alias],
+                                    'format' => 'full_html', // Ensure it's set to 'full_html' or another appropriate format
+                                ]);
+                                $node->save();
+                                echo "SAVED:  ";
+                                 echo "<br><br><br>";
+                            }
+                    } 
+                } else {
+                    echo "Alias does not resolve to a node.\n";
+                    echo $alias;
+                    echo "<br><br>";
                 }
             }
         }
