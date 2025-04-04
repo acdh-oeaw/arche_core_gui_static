@@ -43,13 +43,13 @@ class MainController extends ControllerBase {
         $this->fetchGithubContent();
 
         //fetch the nodes from drupal
-        $this->fetchNodes();
+        $result = $this->fetchNodes();
 
-        return new Response("Update done", 200);
+        return new Response($result, 200);
     }
 
-    private function fetchNodes() {
-
+    private function fetchNodes(): array {
+        $result = [];
         foreach ($this->config as $langcode => $values) {
             foreach ($values as $alias) {
                 $alias_manager = \Drupal::service('path_alias.manager');
@@ -64,8 +64,8 @@ class MainController extends ControllerBase {
                     $node = Node::load($nid);
 
                     if ($node) {
-                        echo "🎉 Loaded node: " . $node->label() . " (ID: $nid)\n";
-                        echo "<br>";
+                        //echo "🎉 Loaded node: " . $node->label() . " (ID: $nid)\n";
+                        //echo "<br>";
                         $nLang = $node->language()->getId();
                         if (isset($this->content[$langcode][$alias])) {
                             
@@ -74,17 +74,21 @@ class MainController extends ControllerBase {
                                     'format' => 'full_html', // Ensure it's set to 'full_html' or another appropriate format
                                 ]);
                                 $node->save();
-                                echo "SAVED:  ";
-                                 echo "<br><br><br>";
+                                $result['updated'][] =$alias;
+                                //echo "SAVED:  ";
+                                // echo "<br><br><br>";
                             }
                     } 
                 } else {
-                    echo "Alias does not resolve to a node.\n";
-                    echo $alias;
-                    echo "<br><br>";
+                     $result['notFound'][] =$alias;
+                    //echo "Alias does not resolve to a node.\n";
+                    //echo $alias;
+                    //echo "<br><br>";
                 }
             }
         }
+        
+        return $result;
     }
 
     /**
