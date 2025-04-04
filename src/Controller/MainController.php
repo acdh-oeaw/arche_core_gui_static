@@ -33,7 +33,7 @@ class MainController extends ControllerBase {
         }
     }
 
-    public function updateNodes(): Response {
+    public function updateNodes(): JsonResponse {
         if (count($this->config) === 0) {
             $this->getLogger('arche_core_gui_static')->error('config file is not existing');
             return new Response("Config file is not exitsing", 404, ['Content-Type' => 'application/json']);
@@ -45,7 +45,7 @@ class MainController extends ControllerBase {
         //fetch the nodes from drupal
         $result = $this->fetchNodes();
 
-        return new Response($result, 200);
+        return new JsonResponse($result, 200);
     }
 
     private function fetchNodes(): array {
