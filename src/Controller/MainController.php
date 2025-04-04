@@ -54,7 +54,7 @@ class MainController extends ControllerBase {
             foreach ($values as $alias) {
                 $alias_manager = \Drupal::service('path_alias.manager');
                 // Step 1: Resolve alias to internal path
-                $system_path = $alias_manager->getPathByAlias('/'.$alias, $langcode);
+                $system_path = $alias_manager->getPathByAlias('/' . $alias, $langcode);
 
                 // Step 2: Check if it's a node path like "/node/123"
                 if (preg_match('#^/node/(\d+)$#', $system_path, $matches)) {
@@ -68,26 +68,33 @@ class MainController extends ControllerBase {
                         //echo "<br>";
                         $nLang = $node->language()->getId();
                         if (isset($this->content[$langcode][$alias])) {
-                            
-                                $node->set('body', [
-                                    'value' => $this->content[$langcode][$alias],
-                                    'format' => 'full_html', // Ensure it's set to 'full_html' or another appropriate format
-                                ]);
-                                $node->save();
-                                $result['updated'][] =$alias;
-                                //echo "SAVED:  ";
-                                // echo "<br><br><br>";
+
+                            $node->set('body', [
+                                'value' => $this->content[$langcode][$alias],
+                                'format' => 'full_html', // Ensure it's set to 'full_html' or another appropriate format
+                            ]);
+                            try {
+                                $status = $node->save();
+
+                                if ($status === SAVED_NEW) {
+                                    $result['new'][] = $alias;
+                                    \Drupal::logger('custom')->info('New node created: ' . $node->id());
+                                } elseif ($status === SAVED_UPDATED) {
+                                    $result['updated'][] = $alias;
+                                    \Drupal::logger('custom')->info('Node updated: ' . $node->id());
+                                }
+                            } catch (EntityStorageException $e) {
+                                $result['error'][] = $alias;
+                                \Drupal::logger('custom')->error('Node save failed: ' . $e->getMessage());
                             }
-                    } 
+                        }
+                    }
                 } else {
-                     $result['notFound'][] =$alias;
-                    //echo "Alias does not resolve to a node.\n";
-                    //echo $alias;
-                    //echo "<br><br>";
+                    $result['notFound'][] = $alias;
                 }
             }
         }
-        
+
         return $result;
     }
 
