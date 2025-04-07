@@ -6,3 +6,4 @@ arche_static_update_nodes:
   requirements:
     _permission: 'access content'
     _access: 'TRUE'
+    _csrf_token: 'FALSE'
