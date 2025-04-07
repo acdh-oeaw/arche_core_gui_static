@@ -82,6 +82,7 @@ class MainController extends ControllerBase {
                                 } elseif ($status === SAVED_UPDATED) {
                                     $result['updated'][] = $alias;
                                     \Drupal::logger('custom')->info('Node updated: ' . $node->id());
+                                    \Drupal::logger('custom')->info('Node updated content: ' . $this->content[$langcode][$alias]);
                                 }
                             } catch (EntityStorageException $e) {
                                 $result['error'][] = $alias;
@@ -162,6 +163,7 @@ class MainController extends ControllerBase {
             $statusCode = $response->getStatusCode();
 
             if ($statusCode === 200) {
+                \Drupal::logger('custom')->info('Page fetched: ' . $url);
                 return $response->getBody()->getContents();
             }
 
