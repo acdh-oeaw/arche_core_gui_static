@@ -20,6 +20,7 @@ class MainController extends ControllerBase {
     private $config = "";
     private $content = [];
     private $githubUrl = "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/refs/heads/main/arche2/";
+    private $homeBlocks = ["en" => 'arche_theme_startpageenglishcontent', "de" => 'arche_theme_startpagegermanblockcontent'];
 
     public function __construct() {
         $this->initConfig();
@@ -46,6 +47,38 @@ class MainController extends ControllerBase {
         $result = $this->fetchNodes();
 
         return new JsonResponse($result, 200);
+    }
+
+    private function updateHomes() {
+        
+        foreach ($this->homeBlocks as $lang => $blocks) {
+            $content = "";
+            if($lang == "en") {
+                $content = $this->content["en"]["home"];
+            } else {
+                $content = $this->content["de"]["home-de"];
+            }
+            $block = \Drupal\block\Entity\Block::load($blocks);
+            \Drupal::logger('custom')->info('BLOCK: ' . $blocks);
+            error_log("BLOKS: ");
+            error_log(print_r($blocks, true));
+            $plugin = $block->getPlugin();
+            $plugin_id = $plugin->getPluginId(); // e.g. "block_content:UUID"
+
+            if (str_starts_with($plugin_id, 'block_content:')) {
+                $uuid = str_replace('block_content:', '', $plugin_id);
+
+                $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+                $results = $storage->loadByProperties(['uuid' => $uuid]);
+
+                $block_content = reset($results);
+                $block_content->set('body', [
+                    'value' => $content,
+                    'format' => 'full_html',
+                ]);
+                $block_content->save();
+            }
+        }
     }
 
     private function fetchNodes(): array {
@@ -90,6 +123,9 @@ class MainController extends ControllerBase {
                             }
                         }
                     }
+                } else if (strpos($alias, 'home') !== false) {
+                    error_log("HOMES");
+                    $this->updateHomes();
                 } else {
                     $result['notFound'][] = $alias;
                 }
